@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Listing - CampusMarket</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                Campus<span>Market</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html">Buy</a>
+                <a href="sell.html">Sell</a>
+                <a href="my-listings.html" class="active">
+                    My Listings
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- Edit Listing -->
+    <section class="register-section">
+
+        <div class="register-card">
+
+            <div class="register-header">
+
+                <h1>Edit Listing</h1>
+
+                <p>
+                    Update the details of your product.
+                </p>
+
+            </div>
+
+
+            <form id="editProductForm">
+
+                <div class="form-group">
+
+                    <label for="editProductName">
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editProductName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="editCategory"
+                        required
+                    >
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Books">
+                            Books
+                        </option>
+
+                        <option value="Electronics">
+                            Electronics
+                        </option>
+
+                        <option value="Furniture">
+                            Furniture
+                        </option>
+
+                        <option value="Clothing">
+                            Clothing
+                        </option>
+
+                        <option value="Sports">
+                            Sports
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editPrice">
+                        Price (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editPrice"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="editDescription"
+                        rows="5"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editSellerName">
+                        Seller Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editSellerName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editContact">
+                        Contact Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="editContact"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editEmail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editImage">
+                        Product Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="editImage"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <img
+                        id="editImagePreview"
+                        src=""
+                        alt="Product Preview"
+                        style="
+                            display: none;
+                            width: 200px;
+                            max-height: 200px;
+                            object-fit: contain;
+                        "
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Save Changes
+                </button>
+
+            </form>
+
+
+            <p
+                id="editMessage"
+                class="register-message"
+            ></p>
+
+
+            <div class="login-link">
+
+                <a href="my-listings.html">
+                    ← Back to My Listings
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <p>
+            © 2026 CampusMarket.
+            Built for students.
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

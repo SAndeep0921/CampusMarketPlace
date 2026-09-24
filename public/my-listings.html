@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Listings - CampusMarket</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
+                Campus<span>Market</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html">Buy</a>
+                <a href="sell.html">Sell</a>
+                <a href="my-listings.html" class="active">My Listings</a>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- My Listings Section -->
+    <section class="products-section">
+
+        <div class="section-header">
+            <h1>My Listings</h1>
+            <p>View the products you have posted on CampusMarket.</p>
+        </div>
+
+        <div id="myListingsContainer" class="products-grid">
+            <!-- Products will appear here -->
+        </div>
+
+        <p id="noListingsMessage" style="display: none; text-align: center;">
+            You haven't listed any products yet.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 CampusMarket. Built for students.</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

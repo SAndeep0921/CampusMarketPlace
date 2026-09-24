@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Campus Marketplace</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="modern-header">
+
+        <nav class="modern-navbar">
+
+            <a href="index.html" class="brand">
+
+    <div class="brand-icon">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Graduation cap -->
+            <path
+                d="M12 27 L40 13 L68 27 L40 41 Z"
+                fill="#087f6b"
+            />
+
+            <!-- Cap top -->
+            <path
+                d="M24 35 V48
+                   C24 56 56 56 56 48
+                   V35"
+                fill="#0aa889"
+            />
+
+            <!-- Cap band -->
+            <path
+                d="M25 39
+                   C32 45 48 45 55 39
+                   V48
+                   C48 54 32 54 25 48 Z"
+                fill="#075c54"
+            />
+
+            <!-- Tassel -->
+            <path
+                d="M67 27 V48"
+                stroke="#075c54"
+                stroke-width="3"
+            />
+
+            <circle
+                cx="67"
+                cy="51"
+                r="4"
+                fill="#f4b942"
+            />
+
+            <!-- Cart -->
+            <path
+                d="M15 56 H24 L29 69 H59"
+                fill="none"
+                stroke="#075c54"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <rect
+                x="27"
+                y="54"
+                width="30"
+                height="15"
+                rx="3"
+                fill="#0aa889"
+            />
+
+            <circle
+                cx="32"
+                cy="73"
+                r="4"
+                fill="#075c54"
+            />
+
+            <circle
+                cx="53"
+                cy="73"
+                r="4"
+                fill="#075c54"
+            />
+
+        </svg>
+    </div>
+
+    <div class="brand-text">
+
+        <div class="brand-name">
+            Campus<span>Market</span>
+        </div>
+
+        <div class="brand-tagline">
+            Buy · Sell · Connect
+        </div>
+
+    </div>
+
+</a>
+
+
+      <div class="modern-nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="#products">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="my-listings.html">My Listings</a>
+    <a href="#about">About</a>
+      </div>
+            <div class="nav-actions">
+
+    <button class="nav-search-button"
+        onclick="document.getElementById('searchInput').focus()">
+        🔍
+    </button>
+
+    <a href="login.html" class="login-button" id="navLoginButton">
+        Login
+    </a>
+
+    <a href="register.html" class="register-button" id="navRegisterButton">
+        Register
+    </a>
+
+    <div id="userMenu" style="display: none;">
+        <span id="userName"></span>
+        <button id="logoutButton">Logout</button>
+    </div>
+
+</div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="modern-hero">
+
+        <div class="hero-left">
+
+            <div class="small-hero-text">
+                Your Campus, Your Marketplace ✦
+            </div>
+
+            <h1>
+
+                Buy & Sell Easily
+
+                <br>
+
+                Within <span>Your Campus</span>
+
+            </h1>
+
+            <p>
+
+                Find great deals, give your items a second life,
+                and connect with fellow students — all in one place!
+
+            </p>
+
+
+            <!-- SEARCH -->
+
+            <div class="modern-search-box">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search for products, categories, or anything..."
+                >
+
+                <button onclick="searchProducts()">
+                    Search
+                </button>
+
+            </div>
+
+
+            <!-- QUICK SEARCH -->
+
+            <div class="quick-search">
+
+                <button onclick="setSearch('Books')">
+                    Textbooks
+                </button>
+
+                <button onclick="setSearch('Electronics')">
+                    Electronics
+                </button>
+
+                <button onclick="setSearch('Clothes')">
+                    Clothes
+                </button>
+
+                <button onclick="setSearch('Furniture')">
+                    Hostel Essentials
+                </button>
+
+                <button onclick="setSearch('')">
+                    More →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CSS CAMPUS ILLUSTRATION -->
+
+        <div class="hero-visual">
+
+            <div class="sun"></div>
+
+            <div class="campus-building">
+
+                <div class="building-roof"></div>
+
+                <div class="building-body">
+
+                    <div class="building-window"></div>
+
+                    <div class="building-window"></div>
+
+                    <div class="building-window"></div>
+
+                    <div class="building-window"></div>
+
+                </div>
+
+                <div class="clock">
+                    12
+                </div>
+
+            </div>
+
+
+            <div class="tree tree-one"></div>
+            <div class="tree tree-two"></div>
+            <div class="tree tree-three"></div>
+
+
+           <!-- STUDENTS -->
+
+<div class="hero-students">
+
+    <div class="student student-one">
+        <div class="student-head"></div>
+        <div class="student-body"></div>
+        <div class="student-backpack"></div>
+        <div class="student-leg left"></div>
+        <div class="student-leg right"></div>
+    </div>
+
+    <div class="student student-two">
+        <div class="student-head"></div>
+        <div class="student-body"></div>
+        <div class="student-backpack"></div>
+        <div class="student-leg left"></div>
+        <div class="student-leg right"></div>
+    </div>
+
+    <div class="student student-three">
+        <div class="student-head"></div>
+        <div class="student-body"></div>
+        <div class="student-backpack"></div>
+        <div class="student-leg left"></div>
+        <div class="student-leg right"></div>
+    </div>
+
+    <div class="student student-four">
+        <div class="student-head"></div>
+        <div class="student-body"></div>
+        <div class="student-backpack"></div>
+        <div class="student-leg left"></div>
+        <div class="student-leg right"></div>
+    </div>
+
+</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="category-section">
+
+    <div class="category-item"
+         onclick="filterByCategory('Books')">
+
+        <div class="category-icon">
+            📚
+        </div>
+
+        <h3>
+            Books & Notes
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Electronics')">
+
+        <div class="category-icon">
+            💻
+        </div>
+
+        <h3>
+            Electronics
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Clothes')">
+
+        <div class="category-icon">
+            👕
+        </div>
+
+        <h3>
+            Clothes & Fashion
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Furniture')">
+
+        <div class="category-icon">
+            🪑
+        </div>
+
+        <h3>
+            Furniture
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Mobile Phones')">
+
+        <div class="category-icon">
+            📱
+        </div>
+
+        <h3>
+            Mobile Phones
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Hostel Essentials')">
+
+        <div class="category-icon">
+            🏠
+        </div>
+
+        <h3>
+            Hostel Essentials
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Sports')">
+
+        <div class="category-icon">
+            ⚽
+        </div>
+
+        <h3>
+            Sports & Fitness
+        </h3>
+
+    </div>
+
+
+    <div class="category-item"
+         onclick="filterByCategory('Others')">
+
+        <div class="category-icon">
+            ⠿
+        </div>
+
+        <h3>
+            Others
+        </h3>
+
+    </div>
+
+</section>
+
+            
+    <!-- ================= PRODUCTS ================= -->
+
+    <section class="modern-products" id="products">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    🔥 Featured Listings
+                </h2>
+
+                <p>
+                    Discover useful items from students around your campus.
+                </p>
+
+            </div>
+
+            <a href="#products">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div
+            class="product-container"
+            id="productsContainer"
+        >
+
+            <p>
+                Loading products...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TRUST SECTION ================= -->
+
+    <section class="trust-section" id="about">
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🛡️
+            </div>
+
+            <div>
+
+                <h3>
+                    Safe & Trusted
+                </h3>
+
+                <p>
+                    Built for student-to-student connections.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                👥
+            </div>
+
+            <div>
+
+                <h3>
+                    Student Community
+                </h3>
+
+                <p>
+                    Connect with people from your campus.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                ♻️
+            </div>
+
+            <div>
+
+                <h3>
+                    Sustainable
+                </h3>
+
+                <p>
+                    Give useful items a second life.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                💚
+            </div>
+
+            <div>
+
+                <h3>
+                    Support Local
+                </h3>
+
+                <p>
+                    Help your campus community grow.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="modern-footer">
+
+        <div class="footer-logo">
+            🎓 CampusMarket
+        </div>
+
+        <p>
+            A student-to-student marketplace.
+        </p>
+
+        <p>
+            © 2026 Campus Marketplace
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+    <script>
+
+        function setSearch(value) {
+
+            const input =
+                document.getElementById("searchInput");
+
+            input.value = value;
+
+            if (value !== "") {
+                searchProducts();
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
