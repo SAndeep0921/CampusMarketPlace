@@ -1,3 +1,8 @@
+require("dotenv").config();
+
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -8,11 +13,8 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "campusmarket_secret_2026";
 
 function authenticateToken(req, res, next) {
-
     const authHeader = req.headers.authorization;
-
-    const token =
-        authHeader && authHeader.split(" ")[1];
+    const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
         return res.status(401).json({
@@ -20,26 +22,26 @@ function authenticateToken(req, res, next) {
         });
     }
 
-    jwt.verify(
-        token,
-        JWT_SECRET,
-        (err, user) => {
-
-            if (err) {
-                return res.status(403).json({
-                    message: "Invalid or expired token"
-                });
-            }
-
-            req.user = user;
-
-            next();
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({
+                message: "Invalid or expired token"
+            });
         }
-    );
+
+        req.user = user;
+        next();
+    });
 }
 
 const app = express();
 const PORT = 3000;
+
+// Request logger
+app.use((req, res, next) => {
+    console.log("REQUEST RECEIVED:", req.method, req.url);
+    next();
+});
 
 // Allow larger JSON requests because product images are stored as data
 app.use(express.json({ limit: "10mb" }));
@@ -49,7 +51,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // MongoDB connection
 mongoose
-    .connect("mongodb://127.0.0.1:27017/campusMarketplace")
+    .connect(process.env.MONGO_URI)
     .then(() => {
         console.log("MongoDB connected successfully");
     })
@@ -57,42 +59,53 @@ mongoose
         console.error("MongoDB connection error:", error);
     });
 
-// Product schema
+// ==========================================
+// PRODUCT SCHEMA
+// ==========================================
+
 const productSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             required: true
         },
+
         category: {
             type: String,
             required: true
         },
+
         price: {
             type: Number,
             required: true
         },
+
         description: {
             type: String,
             required: true
         },
+
         sellerName: {
             type: String,
             required: true
         },
+
         contact: {
             type: String,
             required: true
         },
+
         email: {
             type: String,
             required: true
         },
+
         sellerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: false
-},
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: false
+        },
+
         image: {
             type: String,
             default: ""
@@ -106,12 +119,24 @@ const productSchema = new mongoose.Schema(
 // Product model
 const Product = mongoose.model("Product", productSchema);
 
-// Register a new user
+// ==========================================
+// REGISTER
+// ==========================================
+
 app.post("/api/register", async (req, res) => {
+    console.log("REGISTER ROUTE WAS HIT");
+
     try {
+        console.log("REGISTER REQUEST:", req.body);
+
         const { name, email, password } = req.body;
 
-        // Check if user already exists
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                message: "Name, email and password are required"
+            });
+        }
+
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
@@ -120,59 +145,17 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-        // Create new user
-       const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-const user = new User({
-    name,
-    email,
-    password: hashedPassword
-});
-
-        await user.save();
-
-        res.status(201).json({
-            message: "Registration successful!",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email
-            }
-        });
-
-    } catch (error) {
-        console.error("Registration error:", error);
-
-        res.status(500).json({
-            message: "Registration failed"
-        });
-    }
-});
-
-
-// Register a new user
-app.post("/api/register", async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-
-        if (existingUser) {
-            return res.status(400).json({
-                message: "User already exists"
-            });
-        }
-
-        // Create new user
         const user = new User({
-            name,
-            email,
-            password
+            name: name,
+            email: email,
+            password: hashedPassword
         });
 
-        // Save user to MongoDB
         await user.save();
+
+        console.log("USER SAVED:", user._id);
 
         res.status(201).json({
             message: "Registration successful!",
@@ -184,20 +167,25 @@ app.post("/api/register", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Registration error:", error);
+        console.error("========== REGISTRATION ERROR ==========");
+        console.error(error);
+        console.error("========================================");
 
         res.status(500).json({
-            message: "Registration failed"
+            message: "Registration failed",
+            error: error.message
         });
     }
 });
 
-// Login user
+// ==========================================
+// LOGIN
+// ==========================================
+
 app.post("/api/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Find user by email
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -206,39 +194,37 @@ app.post("/api/login", async (req, res) => {
             });
         }
 
-        // Check password
         const passwordMatch = await bcrypt.compare(
-    password,
-    user.password
-);
+            password,
+            user.password
+        );
 
-if (!passwordMatch) {
-    return res.status(401).json({
-        message: "Invalid email or password"
-    });
-}
+        if (!passwordMatch) {
+            return res.status(401).json({
+                message: "Invalid email or password"
+            });
+        }
 
-        // Login successful
         const token = jwt.sign(
-    {
-        id: user._id,
-        email: user.email
-    },
-    JWT_SECRET,
-    {
-        expiresIn: "1d"
-    }
-);
+            {
+                id: user._id,
+                email: user.email
+            },
+            JWT_SECRET,
+            {
+                expiresIn: "1d"
+            }
+        );
 
-res.json({
-    message: "Login successful!",
-    token: token,
-    user: {
-        id: user._id,
-        name: user.name,
-        email: user.email
-    }
-});
+        res.json({
+            message: "Login successful!",
+            token: token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
 
     } catch (error) {
         console.error("Login error:", error);
@@ -249,37 +235,42 @@ res.json({
     }
 });
 
-// Get all products
+// ==========================================
+// GET ALL PRODUCTS
+// ==========================================
+
 app.get("/api/products", async (req, res) => {
     try {
-        const products = await Product.find().sort({ createdAt: -1 });
+        const products = await Product
+            .find()
+            .sort({ createdAt: -1 });
 
         res.json(products);
+
     } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("========== PRODUCTS ERROR ==========");
+        console.error(error);
+        console.error("====================================");
 
         res.status(500).json({
-            message: "Failed to fetch products"
+            message: "Failed to fetch products",
+            error: error.message
         });
     }
 });
-
 
 // ==========================================
 // ADD A NEW PRODUCT
 // ==========================================
 
 app.post("/api/products", authenticateToken, async (req, res) => {
-
     try {
-
         const product = new Product({
             ...req.body,
             sellerId: req.user.id
         });
 
-        const savedProduct =
-            await product.save();
+        const savedProduct = await product.save();
 
         res.status(201).json({
             message: "Product added successfully!",
@@ -287,11 +278,7 @@ app.post("/api/products", authenticateToken, async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error(
-            "Error adding product:",
-            error
-        );
+        console.error("Error adding product:", error);
 
         res.status(500).json({
             message: "Failed to add product"
@@ -299,10 +286,12 @@ app.post("/api/products", authenticateToken, async (req, res) => {
     }
 });
 
-// Add a new product
+// ==========================================
+// UPDATE PRODUCT
+// ==========================================
+
 app.put("/api/products/:id", authenticateToken, async (req, res) => {
     try {
-
         const product = await Product.findById(req.params.id);
 
         if (!product) {
@@ -321,24 +310,23 @@ app.put("/api/products/:id", authenticateToken, async (req, res) => {
             });
         }
 
-        const updatedProduct =
-            await Product.findByIdAndUpdate(
-                req.params.id,
-                {
-                    name: req.body.name,
-                    category: req.body.category,
-                    price: req.body.price,
-                    description: req.body.description,
-                    sellerName: req.body.sellerName,
-                    contact: req.body.contact,
-                    email: req.body.email,
-                    image: req.body.image
-                },
-                {
-                    new: true,
-                    runValidators: true
-                }
-            );
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            {
+                name: req.body.name,
+                category: req.body.category,
+                price: req.body.price,
+                description: req.body.description,
+                sellerName: req.body.sellerName,
+                contact: req.body.contact,
+                email: req.body.email,
+                image: req.body.image
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
 
         res.json({
             message: "Product updated successfully!",
@@ -346,11 +334,7 @@ app.put("/api/products/:id", authenticateToken, async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error(
-            "Error updating product:",
-            error
-        );
+        console.error("Error updating product:", error);
 
         res.status(500).json({
             message: "Failed to update product"
@@ -358,12 +342,13 @@ app.put("/api/products/:id", authenticateToken, async (req, res) => {
     }
 });
 
-//Delete a product 
+// ==========================================
+// DELETE PRODUCT
+// ==========================================
+
 app.delete("/api/products/:id", authenticateToken, async (req, res) => {
     try {
-
-        const product =
-            await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id);
 
         if (!product) {
             return res.status(404).json({
@@ -381,20 +366,14 @@ app.delete("/api/products/:id", authenticateToken, async (req, res) => {
             });
         }
 
-        await Product.findByIdAndDelete(
-            req.params.id
-        );
+        await Product.findByIdAndDelete(req.params.id);
 
         res.json({
             message: "Product deleted successfully!"
         });
 
     } catch (error) {
-
-        console.error(
-            "Error deleting product:",
-            error
-        );
+        console.error("Error deleting product:", error);
 
         res.status(500).json({
             message: "Failed to delete product"
@@ -402,7 +381,10 @@ app.delete("/api/products/:id", authenticateToken, async (req, res) => {
     }
 });
 
-// Start server
+// ==========================================
+// START SERVER
+// ==========================================
+
 app.listen(PORT, () => {
     console.log("Campus Marketplace server started");
     console.log(`http://localhost:${PORT}`);
